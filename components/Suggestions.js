@@ -1,7 +1,19 @@
-import React from 'react';
-import suggestions from "../fakeDB/suggestions";
+import React, {useEffect, useState} from 'react';
+//import suggestions from "../fakeDB/suggestions";
+import faker from '@faker-js/faker';
 
 function Suggestions(props) {
+    const [suggestions, setSuggestions] = useState([]);
+
+    useEffect(() => {
+        const suggestions = [...Array(5)].map((_, i) => ({
+            ...faker.helpers.createCard(),
+            id: i+1,
+            avatar: `/fakeSuggestions/${i+1}.jpg`
+        }))
+        setSuggestions(suggestions);
+    }, []);
+
     return (
         <div className={'mt-4 ml-10'}>
             <div className={'flex justify-between text-sm mb-5'}>
@@ -9,7 +21,7 @@ function Suggestions(props) {
                 <button className={'text-gray-600 font-semibold'}>See All</button>
             </div>
 
-            {suggestions.map(profile => (
+            {suggestions.sort(() => Math.random() - 0.5).map(profile => (
                 <div key={profile.id} className={'flex items-center justify-between mt-3'}>
                     <img
                         className={'w-10 h-10 rounded-full border p-[2px]'}
